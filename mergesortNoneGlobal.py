@@ -8,13 +8,14 @@ import sys
 
 # Complete the countInversions function below.
 def countInversions(arr):
-    countInversions.count = 0
-    def mergeSort(arr):
+    def mergeSort(arr,count):
         l=len(arr)
+        local = 0
         if l>1:
             mid = l//2
-            left = mergeSort(arr[:mid])
-            right = mergeSort(arr[mid:])
+            left, localL= mergeSort(arr[:mid],count)
+            right, localR = mergeSort(arr[mid:],count)
+            local += localL + localR
             new=[]
             x = 0
             y = 0
@@ -26,18 +27,18 @@ def countInversions(arr):
                     else:
                         new.append(right[y])
                         y += 1
-                        countInversions.count += (mid - x)
+                        local += (mid - x)
                 elif x<mid:
                     new.append(left[x])                    
                     x += 1        
                 elif y<l-mid:
                     new.append(right[y])
                     y += 1
-            return new      
+            return new, count + local     
         else:
-            return arr
-    mergeSort(arr)
-    return countInversions.count
+            return arr, count
+    temp, final = mergeSort(arr,0)
+    return final
 
 
 if __name__ == '__main__':
